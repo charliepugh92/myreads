@@ -21,12 +21,15 @@ class BookSearch extends Component {
   searchForBooks(query) {
     BooksAPI.search(query)
       .then((books) => {
-        books.forEach((book) => {
-          const shelvedBook = this.props.shelvedBooks.find((b) => b.id === book.id)
-          shelvedBook !== undefined && (
-            book.shelf = shelvedBook.shelf
-          )
-        })
+        (books.error === undefined && (
+          books.forEach((book) => {
+            const shelvedBook = this.props.shelvedBooks.find((b) => b.id === book.id)
+            shelvedBook !== undefined && (
+              book.shelf = shelvedBook.shelf
+            )
+          }
+        )))
+
         this.setState({
           searchResults: (books.error === undefined ? books : [])
         })
